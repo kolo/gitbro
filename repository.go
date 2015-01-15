@@ -45,3 +45,33 @@ func (r *Repository) Branches() ([]string, error) {
 
 	return branches, nil
 }
+
+func (r *Repository) Log(ref string) ([]string, error) {
+	walk, err := r.repo.Walk()
+	if err != nil {
+		return nil, err
+	}
+
+	if err = walk.PushRef(ref); err != nil {
+		return nil, err
+	}
+
+	commits := []string{}
+
+	var i int
+	walkFn := func(c *git.Commit) bool {
+		if i > 9 {
+			return false
+		}
+
+		i += 1
+		commits = append(commits, c.Id().String())
+		return true
+	}
+
+	if err = walk.Iterate(walkFn); err != nil {
+		return nil, err
+	}
+
+	return commits, nil
+}
