@@ -1,6 +1,8 @@
 {
   "name": "gitbro",
   "version": "0.0.1",
+  "description": "Gitbro is a simple git repository browser",
+  "repository": "https://github.com/kolo/gitbro",
   "devDependencies": {
     "grunt": "0.4.5",
     "grunt-concurrent": "1.0.0",
