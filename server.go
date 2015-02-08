@@ -1,15 +1,12 @@
 package main
 
 import (
-	"html/template"
 	"log"
 	"net/http"
 )
 
 type Server struct {
-	repo        *Repository
-	contentTmpl *template.Template
-
+	repo   *Repository
 	static http.Handler
 }
 
@@ -22,35 +19,16 @@ func NewServer(path string) (*Server, error) {
 		return nil, err
 	}
 
-	s.contentTmpl, err = template.ParseFiles("views/base.html", "views/content.html")
-	if err != nil {
-		return nil, err
+	s.static = staticHandler{
+		http.Dir("bower_components"),
+		http.Dir("webroot"),
+		http.Dir(".tmp"),
 	}
-
-	s.static = http.FileServer(http.Dir(""))
 
 	return s, nil
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var t *template.Template
-
-	switch r.URL.Path {
-	case "/":
-		t = s.contentTmpl
-	default:
-		s.static.ServeHTTP(w, r)
-		return
-	}
-
-	commits, err := s.repo.Log("refs/heads/master")
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	err = t.ExecuteTemplate(w, "base", commits)
-	if err != nil {
-		log.Println(err)
-	}
+	log.Printf("%s: %s\n", r.Method, r.URL.Path)
+	s.static.ServeHTTP(w, r)
 }

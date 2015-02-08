@@ -20,7 +20,7 @@ func main() {
 		exitWithError(err)
 	}
 
-	log.Fatal(http.ListenAndServe(":3000", s))
+	log.Fatal(http.ListenAndServe(":3001", s))
 }
 
 func currentDir() string {

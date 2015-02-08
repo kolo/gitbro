@@ -1,0 +1,8 @@
+{
+  "name": "gitbro",
+  "version": "0.0.1",
+  "dependencies": {
+    "pure": "yahoo/pure#0.6.0-rc-1",
+    "react": "0.12.2"
+  }
+}
