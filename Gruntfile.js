@@ -5,7 +5,10 @@ module.exports = function(grunt) {
   var path = require('path');
   var extend = require('util')._extend;
 
-  var env = extend({webroot: path.resolve('.')}, process.env);
+  var env = extend({
+    webroot: path.resolve('.'),
+    dir: path.resolve('.')
+  }, process.env);
 
   grunt.initConfig({
     env: env,
@@ -19,41 +22,30 @@ module.exports = function(grunt) {
       }
     },
 
-    react: {
-      components: {
-        files: [{
-          expand: true,
-          cwd: 'webroot/scripts/components',
-          src: ['{,*/}*.react.js'],
-          dest: '.tmp/scripts/components',
-          ext: '.js'
-        }]
-      }
-    },
-
     shell: {
       gobuild: {
-        command: 'go build gitbro',
+        command: 'go build gitbro/server',
         opions: {
           stderr: false
         }
       },
 
       server: {
-        command: 'gin -b gitbro'
+        command: 'gin -b gitbro',
+        options: {
+          execOptions: {
+            cwd: 'server',
+            env: env
+          }
+        }
       }
     },
 
     watch: {
-      react: {
-        files: ['webroot/scripts/components/{,*/}*.react.js'],
-        tasks: ['react']
-      }
     }
   });
 
   grunt.registerTask('serve', [
-    'react',
     'concurrent:server'
   ])
 };

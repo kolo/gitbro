@@ -1,5 +1,6 @@
-bower_components/
-node_modules/
-.tmp/
+/node_modules
+
+webapp/scripts/webapp.bundle.js
+webapp/scripts/webapp.bundle.js.map
 
 gitbro
