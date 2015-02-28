@@ -18,9 +18,7 @@ func NewServer() *Server {
 	s := &Server{}
 
 	s.static = staticHandler{
-		http.Dir("bower_components"),
 		http.Dir("webapp"),
-		http.Dir(".tmp"),
 	}
 
 	router := mux.NewRouter()

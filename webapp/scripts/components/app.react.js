@@ -5,16 +5,6 @@ var Route = ReactRouter.Route;
 var DefaultRoute = ReactRouter.DefaultRoute;
 var RouteHandler = ReactRouter.RouteHandler;
 
-var App = React.createClass({
-  render: function() {
-    return (
-      <div>
-        <RouteHandler/>
-      </div>
-    );
-  }
-});
-
 var BranchList = require('./branch.react').BranchList;
 var Branch = require('./branch.react').Branch;
 
@@ -24,6 +14,16 @@ var _routes = (
     <Route name='branch' path='/b/:branchName' handler={Branch} />
   </Route>
 );
+
+var App = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <RouteHandler/>
+      </div>
+    );
+  }
+});
 
 module.exports = { 
   render: function(el) {

@@ -3,6 +3,8 @@ var ReactRouter = require('react-router');
 
 var Link = ReactRouter.Link;
 
+var BranchStore = require('../stores/branch_store');
+
 var Branch = React.createClass({
   mixins: [ReactRouter.State],
   render: function() {
@@ -18,22 +20,36 @@ var Branch = React.createClass({
 });
 
 var BranchList = React.createClass({
+  componentDidMount: function() {
+    BranchStore.addChangeListener(this._onChange);
+  },
+
   getInitialState: function() {
-    return {
-      branches: ["master"]
-    };
+    return getStateFromStore();
   },
 
   render: function() {
-    var links = this.state.branches.map(function(name) {
+    var branches = this.state.branches;
+
+    var links = branches.map(function(name) {
       return <Link key={name} to="branch" params={{branchName: name}}>{name}</Link>;
     });
 
     return (
       <div>{links}</div>
     );
+  },
+
+  _onChange: function() {
+    this.setState(getStateFromStore());
   }
 });
+
+function getStateFromStore() {
+  return {
+    branches: BranchStore.getAll()
+  }
+};
 
 module.exports = {
   Branch: Branch,

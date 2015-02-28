@@ -10,6 +10,8 @@ module.exports = function(grunt) {
     dir: path.resolve('.')
   }, process.env);
 
+  var webpackConfig = require('./webapp/webpack.config.js');
+
   grunt.initConfig({
     env: env,
 
@@ -41,11 +43,26 @@ module.exports = function(grunt) {
       }
     },
 
+    webpack: {
+      options: webpackConfig,
+      'build-dev': {
+        devtool: 'sourcemap'
+      }
+    },
+
     watch: {
+      app: {
+        files: ['webapp/scripts/**/*'],
+        tasks: ['webpack:build-dev'],
+        options: {
+          spawn: false
+        }
+      }
     }
   });
 
   grunt.registerTask('serve', [
+    'webpack:build-dev',
     'concurrent:server'
   ])
 };
